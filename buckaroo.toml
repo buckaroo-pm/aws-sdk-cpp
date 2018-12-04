@@ -1,0 +1,17 @@
+targets = [ "//aws-cpp-sdk-core:aws-cpp-sdk-core" ]
+
+[[dependency]]
+package = "github.com/buckaroo-pm/aws-c-event-stream"
+version = "*"
+
+[[dependency]]
+package = "github.com/buckaroo-pm/awslabs-aws-c-common"
+version = "*"
+
+[[dependency]]
+package = "github.com/buckaroo-pm/openssl"
+version = "*"
+
+[[dependency]]
+package = "github.com/buckaroo-pm/pkg-config-curl"
+version = "*"

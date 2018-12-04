@@ -1,0 +1,74 @@
+load('//:subdir_glob.bzl', 'subdir_glob')
+load('//:buckaroo_macros.bzl', 'buckaroo_deps_from_package')
+
+use_aws_memory_management = native.read_config('aws', 'use_aws_memory_management', '1')
+
+enable_commoncrypto_encryption = bool(native.read_config('aws', 'enable_commoncrypto_encryption', ''))
+enable_openssl_encryption = bool(native.read_config('aws', 'enable_openssl_encryption', ''))
+
+genrule(
+  name = 'sdk-config', 
+  out = 'SDKConfig.h', 
+  cmd = ' && '.join([
+    'touch $OUT', 
+    'echo "#define JSON_USE_EXCEPTION 0" >> $OUT', 
+    'echo "#define USE_AWS_MEMORY_MANAGEMENT ' + str(use_aws_memory_management) + '" >> $OUT', 
+  ]), 
+)
+
+linux_srcs = glob([
+  'source/net/linux-shared/**/*.cpp', 
+  'source/platform/linux-shared/**/*.cpp', 
+])
+
+android_srcs = glob([
+  'source/platform/android/**/*.cpp', 
+])
+
+windows_srcs = glob([
+  'source/http/windows/**/*.cpp', 
+  'source/net/windows/**/*.cpp', 
+  'source/platform/windows/**/*.cpp', 
+  'source/utils/crypto/bcrypt/**/*.cpp', 
+])
+
+commoncrypto_srcs = glob([
+  'source/utils/crypto/commoncrypto/**/*.cpp', 
+])
+
+openssl_srcs = glob([
+  'source/utils/crypto/openssl/**/*.cpp', 
+])
+
+platform_srcs = linux_srcs + android_srcs + windows_srcs + commoncrypto_srcs + openssl_srcs
+
+cxx_library(
+  name = 'aws-cpp-sdk-core', 
+  header_namespace = '', 
+  exported_headers = dict(
+    subdir_glob([
+      ('include', '**/*.h'), 
+    ]).items() + 
+    [ ('aws/core/SDKConfig.h', ':sdk-config') ], 
+  ),  
+  srcs = 
+    glob([
+      'source/**/*.cpp', 
+    ], exclude = platform_srcs) + 
+    (commoncrypto_srcs if enable_commoncrypto_encryption else []) + 
+    (openssl_srcs if enable_openssl_encryption else []), 
+  platform_srcs = [
+    ('android.*', android_srcs), 
+    ('linux.*', linux_srcs), 
+    ('macos.*', linux_srcs), 
+    ('windows.*', windows_srcs), 
+  ], 
+  deps = 
+    buckaroo_deps_from_package('github.com/buckaroo-pm/pkg-config-curl') + 
+    buckaroo_deps_from_package('github.com/buckaroo-pm/awslabs-aws-c-common') + 
+    buckaroo_deps_from_package('github.com/buckaroo-pm/aws-c-event-stream') + 
+    (buckaroo_deps_from_package('github.com/buckaroo-pm/openssl') if enable_openssl_encryption else []), 
+  visibility = [
+    'PUBLIC', 
+  ], 
+)

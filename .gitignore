@@ -84,3 +84,12 @@ aws-cpp-sdk-core/include/aws/core/SDKConfig.h
 #Aws common runtime libs
 .aws-common-runtime-libs-build/
 .aws-common-runtime-libs-install/
+
+# Buck
+.buckd
+buck-out
+.buckconfig.local
+.buckconfig.d
+buckaroo
+BUCKAROO_DEPS
+buckaroo_macros.bzl

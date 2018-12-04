@@ -1,0 +1,42 @@
+manifest = "cb07ebd67ac1ff7a7792e4c99b3be1586203b375d9cb793371b9c87c042bd3a1"
+
+[[dependency]]
+package = "github.com/buckaroo-pm/aws-c-event-stream"
+target = "//:aws-c-event-stream"
+
+[[dependency]]
+package = "github.com/buckaroo-pm/awslabs-aws-c-common"
+target = "//:aws-c-common"
+
+[[dependency]]
+package = "github.com/buckaroo-pm/openssl"
+target = "//:openssl"
+
+[[dependency]]
+package = "github.com/buckaroo-pm/pkg-config-curl"
+target = "//:curl"
+
+[[lock]]
+name = "github.com/buckaroo-pm/aws-c-event-stream"
+version = "branch=master"
+revision = "be696d9d64c376202f3a9209826173409df8790f"
+
+[[lock]]
+name = "github.com/buckaroo-pm/awslabs-aws-c-common"
+version = "branch=master"
+revision = "1d755e3287db2a89d6c7ac52f4b818e5205b3026"
+
+[[lock]]
+name = "github.com/buckaroo-pm/awslabs-aws-checksums"
+version = "branch=master"
+revision = "7598679075b147468fd83e95d34fddcd541b1efc"
+
+[[lock]]
+name = "github.com/buckaroo-pm/openssl"
+version = "tag=1.0.2j"
+revision = "e61671249ee5dfa59b663d135b64dd6fe9efe9d0"
+
+[[lock]]
+name = "github.com/buckaroo-pm/pkg-config-curl"
+version = "branch=master"
+revision = "c0eac677dc0066d1c994bf68edd314deebe7cb74"
